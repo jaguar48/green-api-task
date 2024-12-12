@@ -10,7 +10,8 @@ app.use(bodyParser.json());
 app.use(express.static('public')); 
 
 const PORT = process.env.PORT || 3000;
-
+const API_BASE_URL = process.env.API_BASE_URL;
+const mediaUrl = process.env.MEDIA_URL;
 
 const fetchFromGreenAPI = async (url, method = 'GET', data = {}) => {
     try {
@@ -25,7 +26,7 @@ const fetchFromGreenAPI = async (url, method = 'GET', data = {}) => {
 
 app.post('/api/getSettings', async (req, res) => {
     const { idInstance, apiTokenInstance } = req.body;
-    const url = `https://api.green-api.com/waInstance${idInstance}/getSettings/${apiTokenInstance}`;
+    const url = `${API_BASE_URL}/waInstance${idInstance}/getSettings/${apiTokenInstance}`;
     try {
         const data = await fetchFromGreenAPI(url);
         res.json(data);
@@ -36,7 +37,7 @@ app.post('/api/getSettings', async (req, res) => {
 
 app.post('/api/getStateInstance', async (req, res) => {
     const { idInstance, apiTokenInstance } = req.body;
-    const url = `https://api.green-api.com/waInstance${idInstance}/getStateInstance/${apiTokenInstance}`;
+    const url = `${API_BASE_URL}/waInstance${idInstance}/getStateInstance/${apiTokenInstance}`;
     try {
         const data = await fetchFromGreenAPI(url);
         res.json(data);
@@ -47,7 +48,7 @@ app.post('/api/getStateInstance', async (req, res) => {
 
 app.post('/api/sendMessage', async (req, res) => {
     const { idInstance, apiTokenInstance, chatId, message } = req.body;
-    const url = `https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiTokenInstance}`;
+    const url = `${API_BASE_URL}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`;
     try {
         const data = await fetchFromGreenAPI(url, 'POST', { chatId, message });
         res.json(data);
@@ -58,7 +59,7 @@ app.post('/api/sendMessage', async (req, res) => {
 
 app.post('/api/sendFileByUrl', async (req, res) => {
     const { idInstance, apiTokenInstance, chatId, url,fileName, caption } = req.body;
-    const apiEndpoint = `https://api.green-api.com/waInstance${idInstance}/sendFileByUrl/${apiTokenInstance}`;
+    const apiEndpoint = `${mediaUrl}/waInstance${idInstance}/sendFileByUrl/${apiTokenInstance}`;
     try {
         const data = await fetchFromGreenAPI(apiEndpoint, 'POST', { chatId, url, fileName, caption });
         res.json(data);
